@@ -1,0 +1,28 @@
+.useraccount-page-background{
+    background-color: #121212;
+    width: 86%;
+    color: #FFFFFF;
+    position: absolute;
+    left: 188px;
+}
+
+.useraccount-content{
+    margin: 78px 0 20px 36px;
+    width: 50%;
+}
+
+.useraccount-page-background h1{
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.margin-bottom20{
+    margin-bottom: 20px;
+}
+
+.modal-buttons{
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}

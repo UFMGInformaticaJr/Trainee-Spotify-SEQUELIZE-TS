@@ -1,0 +1,33 @@
+
+.text-input{
+    width: 100%;
+    margin-bottom: 15px;
+    display: flex;
+    /* color: #C8C9CF; */
+}
+
+.input-text{
+    background-color: #333333;
+    outline: 0;
+    border: 0;
+    height: 35px;
+    padding-left: 10px;
+    color: #C8C9CF;
+    font-size: 16px;
+}
+
+.width90{
+    width: 90%;
+}
+
+.width100{
+    width: 100%;
+}
+
+.input-icon{
+    width: 10%;
+    background-color: #333333;
+    height: 35px;
+    display: flex;
+    margin-left: -2px;
+}
