@@ -1,18 +1,23 @@
-import {React, useState} from 'react';
-import './ArtistsPage.css'
+import React, {useState} from 'react';
+import './ArtistsPage.css';
 import axios from 'axios';
 import { useEffect } from 'react';
 
 
-function ArtistCard({name, imgName}){
+interface ArtistaCard{
+    name: string;
+    imgName: string;
+}
+
+function ArtistCard(card: ArtistaCard){    //function ArtistCard({name, imgName}){
     return(
         <div className='artist-card'>
             <div className='circle'>
-                <img alt='imagem' className='circle' src={imgName}/>
+                <img alt='imagem' className='circle' src={card.imgName}/>
             </div>
             
             <div className='texts'>
-                <p>{name}</p>
+                <p>{card.name}</p>
                 <p>Artista</p>
             </div>
         </div>
@@ -21,7 +26,12 @@ function ArtistCard({name, imgName}){
 
 export default function ArtistPage (){
 
-    const [artists, setArtists] =  useState([]);
+    interface artist{
+        name: string;
+        image: string;
+    }
+
+    const [artists, setArtists] =  useState<artist[]>();
     
 
     useEffect(()=>{
@@ -50,9 +60,10 @@ export default function ArtistPage (){
         <div className='artists-page-background'>
             <h1 onClick={()=> testeAPI()}>Artistas</h1>
             <div className='artists-container'>
-               { artists.map((item, index)=>{
+               { artists ? artists.map((item, index)=>{
                     return <ArtistCard name={item.name} imgName={item.image} key={index}/>
-               }) }
+               }) 
+            : <h3>loading...</h3> }
             </div>
         </div>
     );
