@@ -1,10 +1,12 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const User = require('../domains/users/models/User.js');
-const PermissionError = require('../../errors/PermissionError.js');
-const statusCodes = require('../../constants/statusCodes.js');
+import { sign, verify, JwtPayload } from 'jsonwebtoken';
+import { compare } from 'bcrypt';
+import { User } from '../domains/users/models/User.js';
+import { PermissionError } from '../../errors/PermissionError.js';
+import { statusCodes } from '../../constants/statusCodes.js';
+import { PayloadParams } from '../domains/users/types/PayloadParams';
+import { Request, Response, NextFunction } from 'express';
 
-function generateJWT(user, res) {
+function generateJWT(user: PayloadParams, res: Response) {
   const body = {
     id: user.id,
     name: user.name,
@@ -12,7 +14,7 @@ function generateJWT(user, res) {
     role: user.role,
   };
 
-  const token = jwt.sign({ user: body }, process.env.SECRET_KEY,
+  const token = sign({ user: body }, process.env.SECRET_KEY,
     { expiresIn: process.env.JWT_EXPIRATION });
 
   res.cookie('jwt', token, {
@@ -21,7 +23,7 @@ function generateJWT(user, res) {
   });
 }
 
-function cookieExtractor(req) {
+function cookieExtractor(req: Request) {
   let token = null;
 
   if (req && req.cookies) {
@@ -31,13 +33,13 @@ function cookieExtractor(req) {
   return token;
 }
 
-async function loginMiddleware(req, res, next) {
+export async function loginMiddleware(req: Request, res: Response, next: NextFunction) {
   try {
     const user = await User.findOne({where: {email: req.body.email}});
     if (!user) {
       throw new PermissionError('E-mail e/ou senha incorretos!');
     } else {
-      const matchingPassword = await bcrypt.compare(req.body.password, user.password);
+      const matchingPassword = await compare(req.body.password, user.password);
       if (!matchingPassword) {
         throw new PermissionError('E-mail e/ou senha incorretos!');
       }
@@ -51,12 +53,12 @@ async function loginMiddleware(req, res, next) {
   }
 }
 
-function notLoggedIn(req, res, next) {
+export function notLoggedIn(req: Request, res: Response, next: NextFunction) {
   try {
     const token = cookieExtractor(req);
 
     if (token) {
-      const decoded = jwt.verify(token, process.env.SECRET_KEY);
+      const decoded = verify(token, process.env.SECRET_KEY);
       if (decoded) {
         throw new PermissionError('Você já está logado no sistema!');
       }
@@ -67,11 +69,11 @@ function notLoggedIn(req, res, next) {
   }
 }
 
-function verifyJWT(req, res, next) {
+export function verifyJWT(req: Request, res: Response, next: NextFunction) {
   try {
     const token = cookieExtractor(req);
     if (token) {
-      const decoded = jwt.verify(token, process.env.SECRET_KEY);
+      const decoded = verify(token, process.env.SECRET_KEY) as any;
       req.user = decoded.user;
     }
 
@@ -85,8 +87,8 @@ function verifyJWT(req, res, next) {
   }
 }
 
-const checkRole = (roles) => {
-  return (req, res, next) => {
+export const checkRole = (roles) => {
+  return (req: Request, res: Response, next: NextFunction) => {
     try {
       ! roles.includes(req.user.role) ? res.json('Você não possui permissão para realizar essa ação') : next();
     } catch(error){
@@ -94,11 +96,4 @@ const checkRole = (roles) => {
     }
 
   };
-};
-
-module.exports = {
-  loginMiddleware,
-  notLoggedIn,
-  verifyJWT,
-  checkRole,
 };
