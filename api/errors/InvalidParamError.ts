@@ -1,11 +1,9 @@
 /**
  * O parâmetro passado não atende aos requerimentos exigidos.
  */
-class InvalidParamError extends Error {
-  constructor(msg) {
+export class InvalidParamError extends Error {
+  constructor(msg: string) {
     super(msg);
     this.name = 'InvalidParamError';
   }
 }
-
-module.exports = InvalidParamError;
