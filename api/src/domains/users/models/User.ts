@@ -1,8 +1,8 @@
-const sequelize = require('../../../../database/index.js');
-const {DataTypes} = require('sequelize');
-const userRoles = require('../constants/userRoles.js');
+import {sequelize} from '../../../../database/index.js';
+import {DataTypes} from 'sequelize';
+import {userRoles} from '../constants/userRoles.js';
 
-const User = sequelize.define('Users', {
+export const User = sequelize.define('Users', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -38,5 +38,3 @@ User.sync({alter: false, force: false})
     console.log('User table was (re)created');
   })
   .catch((err) => console.log(err));
-
-module.exports = User;

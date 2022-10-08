@@ -1,4 +1,4 @@
-const statusCodes = {
+export const statusCodes = {
   success: 200,
   created: 201,
   accepted: 202,

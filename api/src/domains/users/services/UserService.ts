@@ -1,17 +1,20 @@
-const bcrypt = require('bcrypt');
-const User = require('../models/User.js');
-const userRoles = require('../constants/userRoles.js');
-const NotAuthorizedError = require('../../../../errors/NotAuthorizedError.js');
-const PermissionError = require('../../../../errors/PermissionError.js');
-const QueryError = require('../../../../errors/QueryError.js');
+import { hash } from 'bcrypt';
+import { User } from '../models/User.js';
+import { userRoles } from '../constants/userRoles.js';
+import { NotAuthorizedError } from '../../../../errors/NotAuthorizedError.js';
+import { PermissionError } from '../../../../errors/PermissionError.js';
+import { QueryError } from '../../../../errors/QueryError.js';
+import { UserParams } from '../types/UserParams';
+import { PayloadParams } from '../types/PayloadParams';
 
-class UserService {
-  async encryptPassword(user) {
+export class UserService {
+  static async encryptPassword(password: string) {
     const saltRounds = 10;
-    user.password = await bcrypt.hash(user.password, saltRounds);
+    const encryptedPassword = await hash(password, saltRounds);
+    return encryptedPassword;
   }
 
-  async create(body) {
+  static async create(body: UserParams) {
     if (body.role == userRoles.admin) {
       throw new PermissionError('Não é possível criar um usuário com cargo de administrador!');
     }
@@ -27,13 +30,13 @@ class UserService {
         role: body.role,
       };
 
-      await this.encryptPassword(user);
+      user.password = await this.encryptPassword(user.password);
 
       await User.create(user);
     }
   }
 
-  async getAll() {
+  static async getAll() {
     const users = await User.findAll({
 
       attributes: ['id', 'name', 'email', 'role'],
@@ -47,7 +50,7 @@ class UserService {
     }
   }
 
-  async getById(id) {
+  static async getById(id: string) {
     const user = await User.findByPk(id, {attributes:
       {
         exclude: ['password', 'createdAt', 'updatedAt'],
@@ -59,7 +62,7 @@ class UserService {
     throw new QueryError(`Não há um usuário com o ID ${id}!`);
   }
 
-  async update(id, body, loggedUser){
+  static async update(id: string, body: UserParams, loggedUser: PayloadParams){
     const user = await this.getById(id);
 
     if (loggedUser.role != userRoles.admin && loggedUser.id != id) {
@@ -70,14 +73,14 @@ class UserService {
       throw new NotAuthorizedError('Você não tem permissão para editar seu cargo');
     }
 
-    if (body.senha) {
-      this.encryptPassword(user);
+    if (body.password) {
+      body.password = await this.encryptPassword(body.password);
     }
 
     await user.update(body);
   }
 
-  async delete(id, idReqUser) {
+  static async delete(id: string, idReqUser: string) {
     if (idReqUser == id) {
       throw new PermissionError('Não é possível deletar o próprio usuário!');
     } else {
@@ -86,5 +89,3 @@ class UserService {
     }
   }
 }
-
-module.exports = new UserService;
