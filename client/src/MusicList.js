@@ -75,20 +75,20 @@ function HeaderList() {
 //   musicArray: string[];
 // }
 
-function ListItem({setMusicArray, musicArray, number}) {
+function ListItem({setMusicArray, musicArray, number, album, artist, musicName}) {
 
   const [liked, setLiked] = useState(false);
 
   return (
     <div className='list-item'>
       <div className="first flex">
-        <p>{musicArray.number}</p>
+        <p>{number}</p>
         <div className="music">
-          <p>{musicArray.musicName}</p>
-          <p>{musicArray.artist}</p>
+          <p>{musicName}</p>
+          <p>{artist}</p>
         </div>
       </div>
-      <p className='album'>{musicArray.album}</p>
+      <p className='album'>{album}</p>
       <div className="list-icons flex">
         <div onClick={() => {
           if (liked) setLiked(false)
