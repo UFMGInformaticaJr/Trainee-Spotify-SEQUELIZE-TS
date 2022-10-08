@@ -7,12 +7,13 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useState } from 'react';
+import React from 'react';
 
 
-function Header(){
-  return(
+function Header() {
+  return (
     <header>
-      <img className='capa' src="assets/Front.jpg" alt='imagem'/>
+      <img className='capa' src="assets/Front.jpg" alt='imagem' />
       <div className="titulos">
         <h5>Playlist</h5>
         <h1>Daily Mix 1</h1>
@@ -23,34 +24,34 @@ function Header(){
   );
 }
 
-function IconsSection(){
+function IconsSection() {
 
   const [liked, setLiked] = useState(false);
 
-  return(
+  return (
     <section>
       <div className="icons">
-        <PlayCircleFilledWhiteIcon htmlColor='#1FDF64' sx={{fontSize: '60px'}}/>
-        <div style={{alignSelf: 'center'}} onClick={()=>{
-            if(liked) setLiked(false) 
-            else setLiked(true)
-          }
+        <PlayCircleFilledWhiteIcon htmlColor='#1FDF64' sx={{ fontSize: '60px' }} />
+        <div style={{ alignSelf: 'center' }} onClick={() => {
+          if (liked) setLiked(false)
+          else setLiked(true)
+        }
         }>
           {
-            liked ? <FavoriteIcon className='white-icon' htmlColor='#1FDF64' sx={{fontSize: '35px'}}/>
-            : <FavoriteBorderOutlinedIcon className='white-icon' htmlColor='#C8C9CF' sx={{fontSize: '35px'}}/>
+            liked ? <FavoriteIcon className='white-icon' htmlColor='#1FDF64' sx={{ fontSize: '35px' }} />
+              : <FavoriteBorderOutlinedIcon className='white-icon' htmlColor='#C8C9CF' sx={{ fontSize: '35px' }} />
           }
         </div>
-          <DownloadForOfflineOutlinedIcon htmlColor='#C8C9CF' className='white-icon' sx={{fontSize: '35px'}}/>
-          <MoreHorizOutlinedIcon htmlColor='#C8C9CF' className='white-icon' sx={{fontSize: '35px'}}/>
+        <DownloadForOfflineOutlinedIcon htmlColor='#C8C9CF' className='white-icon' sx={{ fontSize: '35px' }} />
+        <MoreHorizOutlinedIcon htmlColor='#C8C9CF' className='white-icon' sx={{ fontSize: '35px' }} />
       </div>
     </section>
   );
 }
 
 
-function HeaderList(){
-  return(
+function HeaderList() {
+  return (
     <div>
       <div className='header-list'>
         <div className="first flex">
@@ -58,18 +59,27 @@ function HeaderList(){
           <p>TÍTULO</p>
         </div>
         <p>ÁLBUM</p>
-        <AccessTimeIcon sx={{position: 'relative', top: '-4px'}}/>
+        <AccessTimeIcon sx={{ position: 'relative', top: '-4px' }} />
       </div>
-      <hr/>
+      <hr />
     </div>
   );
 }
 
-function ListItem({musicName, artist, album, number, setMusicArray, musicArray}){
+//interface Litem {
+//   musicName: string;
+//   artist: string;
+//   album: string;
+//   number: number;
+//   setMusicArray: string;
+//   musicArray: string[];
+// }
+
+function ListItem({setMusicArray, musicArray, number, album, artist, musicName}) {
 
   const [liked, setLiked] = useState(false);
 
-  return(
+  return (
     <div className='list-item'>
       <div className="first flex">
         <p>{number}</p>
@@ -80,21 +90,21 @@ function ListItem({musicName, artist, album, number, setMusicArray, musicArray})
       </div>
       <p className='album'>{album}</p>
       <div className="list-icons flex">
-        <div onClick={()=>{
-            if(liked) setLiked(false) 
-            else setLiked(true)
-          }
+        <div onClick={() => {
+          if (liked) setLiked(false)
+          else setLiked(true)
+        }
         }>
           {
-            liked ? <FavoriteIcon htmlColor='#1FDF64'/>
-            : <FavoriteBorderOutlinedIcon htmlColor='#C8C9CF'/>
+            liked ? <FavoriteIcon htmlColor='#1FDF64' />
+              : <FavoriteBorderOutlinedIcon htmlColor='#C8C9CF' />
           }
         </div>
-        <div onClick={()=>{
-          let tempArray = musicArray.filter((music, index)=>{return index !== number - 1});
+        <div onClick={() => {
+          let tempArray = musicArray.filter((music, index) => { return index !== number - 1 });
           setMusicArray(tempArray);
         }}>
-          <DeleteIcon htmlColor='#C8C9CF' className='delete-icon'/>
+          <DeleteIcon htmlColor='#C8C9CF' className='delete-icon' />
         </div>
       </div>
     </div>
@@ -102,6 +112,12 @@ function ListItem({musicName, artist, album, number, setMusicArray, musicArray})
 }
 
 function App() {
+
+  // interface music {
+  //   musicName: string;
+  //   artist: string;
+  //   album: string;
+  // }
 
   const [musicArray, setMusicArray] = useState([
     {
@@ -123,15 +139,15 @@ function App() {
   ]);
 
   return (
-      <div className='gradient-background'>
-        <Header/>
-        <IconsSection/>
-        <HeaderList/>
-        {
-          musicArray.map((item, index)=>{
-            return <ListItem musicArray={musicArray} setMusicArray={setMusicArray} musicName={item.musicName} artist={item.artist} album={item.album} number={index + 1} key={index}/>
-          })
-        }
+    <div className='gradient-background'>
+      <Header />
+      <IconsSection />
+      <HeaderList />
+      {
+        musicArray.map((item, index) => {
+          return <ListItem musicArray={musicArray} setMusicArray={setMusicArray} musicName={item.musicName} artist={item.artist} album={item.album} number={index + 1} key={index} />
+        })
+      }
     </div>
   );
 }

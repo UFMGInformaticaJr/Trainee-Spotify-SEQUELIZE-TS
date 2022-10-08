@@ -1,10 +1,10 @@
-import react from 'react';
 import './SideBar.css';
 import { useNavigate } from "react-router-dom";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AlbumIcon from '@mui/icons-material/Album';
 import { AccountCircleRounded } from '@mui/icons-material';
+import React from 'react';
 
 export default function SideBar(){
 
