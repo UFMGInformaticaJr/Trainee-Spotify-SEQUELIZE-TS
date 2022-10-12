@@ -1,12 +1,14 @@
-const router = require('express').Router();
-const SongService = require('../services/SongService');
-const {verifyJWT, checkRole } = require('../../../middlewares/auth-middlewares');
-const statusCodes = require('../../../../constants/statusCodes.js');
-const userRoles = require('../../users/constants/userRoles.js');
+import { Router, Request, Response, NextFunction } from 'express';
+import { SongService } from'../services/SongService';
+import { verifyJWT, checkRole } from '../../../middlewares/auth-middlewares';
+import { statusCodes } from '../../../../constants/statusCodes';
+import { userRoles } from '../../users/constants/userRoles';
+
+export const router = Router();
 
 router.post('/',
   verifyJWT,
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       await SongService.create(req.body);
       res.status(statusCodes.created).end();
@@ -18,7 +20,7 @@ router.post('/',
 
 router.get('/',
   verifyJWT,
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try{
       const songs = await SongService.getAll();
       res.status(statusCodes.success).json(songs);
@@ -30,7 +32,7 @@ router.get('/',
 
 router.get('/:id',
   verifyJWT,
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const song = await SongService.getById(req.params.id);
       res.status(statusCodes.success).json(song);
@@ -42,7 +44,7 @@ router.get('/:id',
 
 router.get('/song/random',
   verifyJWT,
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try{
       const song = await SongService.getRandomSong();
       res.status(statusCodes.success).json(song);
@@ -54,7 +56,7 @@ router.get('/song/random',
 
 router.get('/artist/:id',
   verifyJWT,
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try{
       const song = await SongService.getSongsByArtist(req.params.id);
       res.status(statusCodes.success).json(song);
@@ -66,7 +68,7 @@ router.get('/artist/:id',
 
 router.put('/:id',
   verifyJWT,
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       await SongService.update(req.params.id, req.body);
       res.status(statusCodes.noContent).end();
@@ -79,7 +81,7 @@ router.put('/:id',
 router.delete('/:id',
   verifyJWT,
   checkRole([userRoles.admin]),
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       await SongService.delete(req.params.id);
       res.status(statusCodes.noContent).end();
@@ -89,4 +91,3 @@ router.delete('/:id',
   }
 );
 
-module.exports = router;
