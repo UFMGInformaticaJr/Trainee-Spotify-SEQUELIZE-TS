@@ -1,8 +1,17 @@
-import {sequelize} from '../../../../database/index.js';
-import {DataTypes} from 'sequelize';
-import {userRoles} from '../constants/userRoles.js';
+import { sequelize } from '../../../../database/index.js';
+import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
+import { userRoles } from '../constants/userRoles.js';
 
-export const User = sequelize.define('Users', {
+interface User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+  // Some fields are optional when calling UserModel.create() or UserModel.build()
+  id: CreationOptional<string>;
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+}
+
+export const User = sequelize.define<User>('Users', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,

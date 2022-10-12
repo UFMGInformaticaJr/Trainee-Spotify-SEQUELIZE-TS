@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
-const {JsonWebTokenError} = require('jsonwebtoken');
-const NotAuthorizedError = require('../../errors/NotAuthorizedError.js');
-const InvalidParamError = require('../../errors/InvalidParamError');
-const TokenError = require('../../errors/TokenError');
-const QueryError = require('../../errors/QueryError');
-const statusCodes = require('../../constants/statusCodes.js');
+import { JsonWebTokenError } from 'jsonwebtoken';
+import { NotAuthorizedError } from '../../errors/NotAuthorizedError.js';
+import { InvalidParamError } from '../../errors/InvalidParamError';
+import { TokenError } from '../../errors/TokenError';
+import { QueryError } from '../../errors/QueryError';
+import { statusCodes } from '../../constants/statusCodes.js';
+import { Request, Response, NextFunction } from 'express';
 
-function errorHandler(error, req, res, next) {
+export function errorHandler(error: Error, req: Request, res: Response, next: NextFunction) {
   let message = error.message;
   let status = statusCodes.internalServerError;
 
@@ -30,5 +31,3 @@ function errorHandler(error, req, res, next) {
   console.log(error);
   res.status(status).json(message);
 }
-
-module.exports = errorHandler;

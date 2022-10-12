@@ -1,11 +1,11 @@
-import {Router, Request, Response, NextFunction} from 'express';
-import {UserService} from '../services/UserService';
-import {loginMiddleware,
+import { Router, Request, Response, NextFunction } from 'express';
+import { UserService } from '../services/UserService';
+import { loginMiddleware,
   verifyJWT,
   checkRole,
-  notLoggedIn} from '../../../middlewares/auth-middlewares.js';
-import {userRoles} from '../../users/constants/userRoles.js';
-import {statusCodes} from '../../../../constants/statusCodes.js';
+  notLoggedIn } from '../../../middlewares/auth-middlewares.js';
+import { userRoles } from '../../users/constants/userRoles.js';
+import { statusCodes } from '../../../../constants/statusCodes.js';
 
 export const router = Router();
 
