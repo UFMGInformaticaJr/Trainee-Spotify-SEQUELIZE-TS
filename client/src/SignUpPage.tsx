@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import HttpsOutlinedIcon from '@mui/icons-material/HttpsOutlined';
-import {InputText} from './InputText.js';
+import {InputText} from './InputText';
 
 const buttonStyle = {
     backgroundColor: '#1EB954', 

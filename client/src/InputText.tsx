@@ -4,16 +4,19 @@ import './Input.css'
 interface UInput{ 
     label: string;
     type: string;
+    withoutIcon?: boolean;
+    disabled?: boolean;
 }
 
-export function InputText(input: UInput, {withoutIcon = false, disabled = false}){
+// export function InputText(input: UInput, {withoutIcon = false, disabled = false}){
+    export function InputText({label, type, withoutIcon = false, disabled = false}: UInput){
     return(
         <>
             {
             !withoutIcon ? (
-                <input type={input.type} placeholder={input.label} className="input-text  width90"/>
+                <input type={type} placeholder={label} className="input-text  width90"/>
             ) : (
-                <input type={input.type} placeholder={input.label} disabled={disabled} className="input-text width100"/>
+                <input type={type} placeholder={label} disabled={disabled} className="input-text width100"/>
             )
         }
         </>

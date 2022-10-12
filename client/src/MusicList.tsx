@@ -1,3 +1,4 @@
+import React from 'react';
 import './MusicList.css';
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
@@ -7,8 +8,21 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useState } from 'react';
-import React from 'react';
 
+type Music = {
+  musicName: string;
+  artist: string;
+  album: string;
+}
+
+interface Litem {
+  musicName: string;
+  artist: string;
+  album: string;
+  number: number;
+  setMusicArray: (musicArray: Music[]) => void;
+  musicArray: Music[];
+}
 
 function Header() {
   return (
@@ -66,16 +80,8 @@ function HeaderList() {
   );
 }
 
-//interface Litem {
-//   musicName: string;
-//   artist: string;
-//   album: string;
-//   number: number;
-//   setMusicArray: string;
-//   musicArray: string[];
-// }
 
-function ListItem({setMusicArray, musicArray, number, album, artist, musicName}) {
+function ListItem({ setMusicArray, musicArray, number, album, artist, musicName }: Litem) {
 
   const [liked, setLiked] = useState(false);
 
@@ -113,11 +119,6 @@ function ListItem({setMusicArray, musicArray, number, album, artist, musicName})
 
 function App() {
 
-  // interface music {
-  //   musicName: string;
-  //   artist: string;
-  //   album: string;
-  // }
 
   const [musicArray, setMusicArray] = useState([
     {
@@ -151,7 +152,6 @@ function App() {
     </div>
   );
 }
-
 
 
 export default App;
