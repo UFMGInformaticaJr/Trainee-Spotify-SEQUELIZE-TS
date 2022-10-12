@@ -1,20 +1,20 @@
 import { hash } from 'bcrypt';
-import { User } from '../models/User.js';
-import { userRoles } from '../constants/userRoles.js';
-import { NotAuthorizedError } from '../../../../errors/NotAuthorizedError.js';
-import { PermissionError } from '../../../../errors/PermissionError.js';
-import { QueryError } from '../../../../errors/QueryError.js';
-import { UserParams } from '../types/UserParams';
+import { User, UserInterface } from '../models/User';
+import { Attributes } from 'sequelize/types';
+import { userRoles } from '../constants/userRoles';
+import { NotAuthorizedError } from '../../../../errors/NotAuthorizedError';
+import { PermissionError } from '../../../../errors/PermissionError';
+import { QueryError } from '../../../../errors/QueryError';
 import { PayloadParams } from '../types/PayloadParams';
 
-export class UserService {
-  static async encryptPassword(password: string) {
+class UserServiceClass {
+  async encryptPassword(password: string) {
     const saltRounds = 10;
     const encryptedPassword = await hash(password, saltRounds);
     return encryptedPassword;
   }
 
-  static async create(body: UserParams) {
+  async create(body: Attributes<UserInterface>) {
     if (body.role == userRoles.admin) {
       throw new PermissionError('Não é possível criar um usuário com cargo de administrador!');
     }
@@ -36,7 +36,7 @@ export class UserService {
     }
   }
 
-  static async getAll() {
+  async getAll() {
     const users = await User.findAll({
 
       attributes: ['id', 'name', 'email', 'role'],
@@ -50,7 +50,7 @@ export class UserService {
     }
   }
 
-  static async getById(id: string) {
+  async getById(id: string) {
     const user = await User.findByPk(id, {attributes:
       {
         exclude: ['password', 'createdAt', 'updatedAt'],
@@ -62,7 +62,7 @@ export class UserService {
     throw new QueryError(`Não há um usuário com o ID ${id}!`);
   }
 
-  static async update(id: string, body: UserParams, loggedUser: PayloadParams){
+  async update(id: string, body: Attributes<UserInterface>, loggedUser: PayloadParams){
     const user = await this.getById(id);
 
     if (loggedUser.role != userRoles.admin && loggedUser.id != id) {
@@ -80,7 +80,7 @@ export class UserService {
     await user.update(body);
   }
 
-  static async delete(id: string, idReqUser: string) {
+  async delete(id: string, idReqUser: string) {
     if (idReqUser == id) {
       throw new PermissionError('Não é possível deletar o próprio usuário!');
     } else {
@@ -89,3 +89,5 @@ export class UserService {
     }
   }
 }
+
+export const UserService = new UserServiceClass();
