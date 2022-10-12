@@ -1,13 +1,14 @@
-const Song = require('../models/Song.js');
-const QueryError = require('../../../../errors/QueryError.js');
+import { Song, SongInterface } from '../models/Song';
+import { Attributes } from 'sequelize/types';
+import { QueryError } from '../../../../errors/QueryError';
 
-class SongService {
-  async create(body) {
+class SongServiceClass {
+  async create(body: Attributes<SongInterface>) {
     const song = {
       title: body.title,
       cover_image: body.cover_image,
       artist_id: body.artist_id,
-      genre: body.genre
+      genre: body.genre,
     };
 
     await Song.create(song);
@@ -23,7 +24,7 @@ class SongService {
     return songs;
   }
 
-  async getById(id) {
+  async getById(id: string) {
     const song = await Song.findByPk(id);
 
     if (!song) {
@@ -41,7 +42,7 @@ class SongService {
     return song;
   }
 
-  async getSongsByArtist(artistId) {
+  async getSongsByArtist(artistId: string) {
     const songs = await Song.findAll({
       where: {
         artist_id: artistId
@@ -55,15 +56,15 @@ class SongService {
     return songs;
   }
 
-  async update(id, body) {
+  async update(id: string, body: Attributes<SongInterface>) {
     const song = await this.getById(id);
     await song.update(body);
   }
 
-  async delete(id) {
+   async delete(id: string) {
     const song = await this.getById(id);
     await song.destroy();
   }
 }
 
-module.exports = new SongService;
+export const SongService = new SongServiceClass();
