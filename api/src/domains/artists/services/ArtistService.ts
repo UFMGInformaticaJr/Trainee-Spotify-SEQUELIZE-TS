@@ -1,8 +1,9 @@
-const Artist = require('../models/Artist.js');
-const QueryError = require('../../../../errors/QueryError.js');
+import { Artist, ArtistInterface } from "../models/Artist";
+import { QueryError } from "../../../../errors/QueryError";
+import { Attributes } from "sequelize/types";
 
-class ArtistService {
-  async create(body){
+class ArtistServiceClass {
+  async create(body: Attributes<ArtistInterface>){
     const artist = {
       name: body.name,
       nationality: body.nationality,
@@ -21,7 +22,7 @@ class ArtistService {
     return artists;
   }
 
-  async getById(id){
+  async getById(id: string){
     const artist = await Artist.findByPk(id);
 
     if(!artist){
@@ -31,16 +32,16 @@ class ArtistService {
     return artist;
   }
 
-  async update(id, body){
+  async update(id: string, body: Attributes<ArtistInterface>){
     const artist = await this.getById(id);
     await artist.update(body);
   }
 
-  async delete(id){
+  async delete(id: string){
     const artist = await this.getById(id);
     await artist.destroy();
   }
 
 }
 
-module.exports = new ArtistService;
+export const ArtistService = new ArtistServiceClass();
