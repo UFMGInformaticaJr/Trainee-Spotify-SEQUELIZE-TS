@@ -1,9 +1,8 @@
-import { sequelize } from '../../../../database/index.js';
+import { sequelize } from '../../../../database/index';
 import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
-import { userRoles } from '../constants/userRoles.js';
+import { userRoles } from '../constants/userRoles';
 
-interface User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
-  // Some fields are optional when calling UserModel.create() or UserModel.build()
+export interface UserInterface extends Model<InferAttributes<UserInterface>, InferCreationAttributes<UserInterface>> {
   id: CreationOptional<string>;
   name: string;
   email: string;
@@ -11,7 +10,7 @@ interface User extends Model<InferAttributes<User>, InferCreationAttributes<User
   role: string;
 }
 
-export const User = sequelize.define<User>('Users', {
+export const User = sequelize.define<UserInterface>('Users', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -42,7 +41,7 @@ export const User = sequelize.define<User>('Users', {
 Comando para criar/alterar as
 colunas da tabela caso necessário
  */
-User.sync({alter: false, force: false})
+User.sync({alter: true, force: false})
   .then(() => {
     console.log('User table was (re)created');
   })
