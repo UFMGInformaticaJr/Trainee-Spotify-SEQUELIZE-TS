@@ -1,12 +1,14 @@
-const router = require('express').Router();
-const ArtistService = require('../services/ArtistService.js');
-const {verifyJWT, checkRole } = require('../../../middlewares/auth-middlewares.js');
-const userRoles = require('../../users/constants/userRoles.js');
-const statusCodes = require('../../../../constants/statusCodes.js');
+import { Router, Request, Response, NextFunction } from 'express';
+import { ArtistService } from '../services/ArtistService';
+import { verifyJWT, checkRole } from '../../../middlewares/auth-middlewares';
+import { userRoles } from '../../users/constants/userRoles';
+import { statusCodes } from '../../../../constants/statusCodes';
+
+export const router = Router();
 
 router.post('/',
   verifyJWT,
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       await ArtistService.create(req.body);
       res.status(statusCodes.created).end();
@@ -18,7 +20,7 @@ router.post('/',
 
 router.get('/',
   verifyJWT,
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try{
       const artists = await ArtistService.getAll();
       res.status(statusCodes.success).json(artists);
@@ -30,7 +32,7 @@ router.get('/',
 
 router.get('/:id',
   verifyJWT,
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const artist = await ArtistService.getById(req.params.id);
 
@@ -44,7 +46,7 @@ router.get('/:id',
 router.put('/:id',
   verifyJWT,
   checkRole([userRoles.admin]),
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       await ArtistService.update(req.params.id, req.body);
 
@@ -58,7 +60,7 @@ router.put('/:id',
 router.delete('/:id',
   verifyJWT,
   checkRole([userRoles.admin]),
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       await ArtistService.delete(req.params.id);
 
@@ -68,5 +70,3 @@ router.delete('/:id',
     }
   }
 );
-
-module.exports = router;
