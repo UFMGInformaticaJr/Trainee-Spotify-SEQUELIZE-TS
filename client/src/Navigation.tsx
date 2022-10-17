@@ -8,7 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUpPage from "./SignUpPage";
 import UserAccountPage from "./UserAccountPage";
 
-export function Navigation() {
+export default function Navigation() {
     
   return (
     <div className="background">
