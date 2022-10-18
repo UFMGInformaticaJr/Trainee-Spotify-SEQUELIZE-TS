@@ -1,10 +1,11 @@
-import { sign, verify, JwtPayload } from 'jsonwebtoken';
+import { JwtPayload, sign, verify } from 'jsonwebtoken';
 import { compare } from 'bcrypt';
-import { User } from '../domains/users/models/User.js';
-import { PermissionError } from '../../errors/PermissionError.js';
-import { statusCodes } from '../../constants/statusCodes.js';
+import { User } from '../domains/users/models/User';
+import { PermissionError } from '../../errors/PermissionError';
+import { statusCodes } from '../../constants/statusCodes';
 import { PayloadParams } from '../domains/users/types/PayloadParams';
 import { Request, Response, NextFunction } from 'express';
+import { getEnv } from '../../constants/getEnv';
 
 function generateJWT(user: PayloadParams, res: Response) {
   const body = {
@@ -13,13 +14,11 @@ function generateJWT(user: PayloadParams, res: Response) {
     email: user.email,
     role: user.role,
   };
-
-  const token = sign({ user: body }, process.env.SECRET_KEY,
-    { expiresIn: process.env.JWT_EXPIRATION });
-
+  
+  const token = sign({ user: body }, getEnv('SECRET_KEY'), { expiresIn: getEnv('JWT_EXPIRATION')});
   res.cookie('jwt', token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV !== 'development',
+      httpOnly: true,
+      secure: getEnv('NODE_ENV') !== 'development',
   });
 }
 
@@ -38,11 +37,11 @@ export async function loginMiddleware(req: Request, res: Response, next: NextFun
     const user = await User.findOne({where: {email: req.body.email}});
     if (!user) {
       throw new PermissionError('E-mail e/ou senha incorretos!');
-    } else {
-      const matchingPassword = await compare(req.body.password, user.password);
-      if (!matchingPassword) {
-        throw new PermissionError('E-mail e/ou senha incorretos!');
-      }
+    }
+
+    const matchingPassword = await compare(req.body.password, user.password);
+    if (!matchingPassword) {
+      throw new PermissionError('E-mail e/ou senha incorretos!');
     }
 
     generateJWT(user, res);
@@ -58,7 +57,7 @@ export function notLoggedIn(req: Request, res: Response, next: NextFunction) {
     const token = cookieExtractor(req);
 
     if (token) {
-      const decoded = verify(token, process.env.SECRET_KEY);
+      const decoded = verify(token, getEnv('SECRET_KEY'));
       if (decoded) {
         throw new PermissionError('Você já está logado no sistema!');
       }
@@ -73,7 +72,7 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction) {
   try {
     const token = cookieExtractor(req);
     if (token) {
-      const decoded = verify(token, process.env.SECRET_KEY) as any;
+      const decoded = verify(token, getEnv('SECRET_KEY')) as JwtPayload;
       req.user = decoded.user;
     }
 
@@ -87,7 +86,7 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export const checkRole = (roles) => {
+export const checkRole = (roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       ! roles.includes(req.user.role) ? res.json('Você não possui permissão para realizar essa ação') : next();
