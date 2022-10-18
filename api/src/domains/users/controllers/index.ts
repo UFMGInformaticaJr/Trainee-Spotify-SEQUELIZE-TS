@@ -3,9 +3,9 @@ import { UserService } from '../services/UserService';
 import { loginMiddleware,
   verifyJWT,
   checkRole,
-  notLoggedIn } from '../../../middlewares/auth-middlewares.js';
-import { userRoles } from '../../users/constants/userRoles.js';
-import { statusCodes } from '../../../../constants/statusCodes.js';
+  notLoggedIn } from '../../../middlewares/auth-middlewares';
+import { userRoles } from '../../users/constants/userRoles';
+import { statusCodes } from '../../../../constants/statusCodes';
 
 export const router = Router();
 
@@ -46,7 +46,6 @@ router.get('/',
   },
 );
 
-
 router.get('/user',
   verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
@@ -66,7 +65,7 @@ router.get('/:id',
   verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = await UserService.getById(req.params.id);
+      const user = await UserService.getById(req.params.id!);
 
       res.status(statusCodes.success).json(user);
     } catch (error) {
@@ -80,7 +79,7 @@ router.put('/:id',
   verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await UserService.update(req.params.id, req.body, req.user);
+      await UserService.update(req.params.id!, req.body, req.user);
       res.status(statusCodes.noContent).end();
     } catch (error) {
       next(error);
@@ -93,7 +92,7 @@ router.delete('/:id',
   checkRole([userRoles.admin]),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await UserService.delete(req.params.id, req.user.id);
+      await UserService.delete(req.params.id!, req.user.id);
       res.status(statusCodes.noContent).end();
     } catch (err) {
       next(err);
