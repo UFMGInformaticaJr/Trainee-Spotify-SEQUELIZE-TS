@@ -9,6 +9,7 @@ interface UserSong extends Model<InferAttributes<UserSong>, InferCreationAttribu
   SongId: string; 
 }
 
+
 export const UserSong = sequelize.define<UserSong>('UserSongs', {
   id: {
     type: DataTypes.INTEGER,
@@ -52,7 +53,7 @@ UserSong.belongsTo(Song);
 User.hasMany(UserSong);
 UserSong.belongsTo(User);
 
-UserSong.sync({alter: true, force: true})
+UserSong.sync({alter: false, force: true})
   .then(() => {
     console.log('UserSong table was (re)created');
   })

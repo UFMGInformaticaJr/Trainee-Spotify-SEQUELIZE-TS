@@ -52,7 +52,7 @@ Artist.hasMany(Song, {
 Comando para criar/alterar as
 colunas da tabela caso necessário
  */
-Song.sync({alter: true, force: false})
+Song.sync({alter: false, force: false})
   .then(() => {
     console.log('Song table was (re)created');
   })

@@ -31,7 +31,7 @@ export const Artist = sequelize.define<ArtistInterface>('Artist', {
   }
 });
 
-Artist.sync({alter: true, force: false})
+Artist.sync({alter: false, force: false})
   .then(() => {
     console.log('Artist table was (re)created');
   })
