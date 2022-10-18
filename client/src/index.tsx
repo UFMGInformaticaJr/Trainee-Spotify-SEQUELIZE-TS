@@ -1,13 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-//@ts-ignore
-import Navigation from './Navigation.js';
-
-
+import Navigation from './Navigation';
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root")! //*********/
+  document.getElementById("root")! 
 );
 root.render(
   <Navigation/>

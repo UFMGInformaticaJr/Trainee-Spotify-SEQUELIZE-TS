@@ -120,7 +120,7 @@ function ListItem({ setMusicArray, musicArray, number, album, artist, musicName 
 function App() {
 
 
-  const [musicArray, setMusicArray] = useState([
+  const [musicArray, setMusicArray] = useState<Music[]>([
     {
       musicName: 'The Zephyr Song',
       artist: 'Red Hot Chili Peppers',

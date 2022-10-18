@@ -2,13 +2,12 @@ import React from "react";
 import './Input.css'
 
 interface UInput{ 
-    label: string;
-    type: string;
+    label?: string;
+    type?: string;
     withoutIcon?: boolean;
     disabled?: boolean;
 }
 
-// export function InputText(input: UInput, {withoutIcon = false, disabled = false}){
     export function InputText({label, type, withoutIcon = false, disabled = false}: UInput){
     return(
         <>
