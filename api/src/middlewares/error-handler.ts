@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 import { JsonWebTokenError } from 'jsonwebtoken';
-import { NotAuthorizedError } from '../../errors/NotAuthorizedError.js';
+import { NotAuthorizedError } from '../../errors/NotAuthorizedError';
 import { InvalidParamError } from '../../errors/InvalidParamError';
 import { TokenError } from '../../errors/TokenError';
 import { QueryError } from '../../errors/QueryError';
-import { statusCodes } from '../../constants/statusCodes.js';
+import { statusCodes } from '../../constants/statusCodes';
 import { Request, Response, NextFunction } from 'express';
 
 export function errorHandler(error: Error, req: Request, res: Response, next: NextFunction) {
