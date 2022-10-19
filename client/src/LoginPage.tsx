@@ -5,6 +5,16 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import HttpsOutlinedIcon from '@mui/icons-material/HttpsOutlined';
 import React from "react";
 
+// import Artist from "./interfaces"
+
+
+// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// interface ArtistProps{
+//     artists: Artist[];
+// } exemplo para a documentação
+
+
+
 const buttonStyle = {
     backgroundColor: 'white', 
     color: 'black', 
