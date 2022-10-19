@@ -4,20 +4,21 @@
   "description": "gabarito para o trainee 2022/2",
   "main": "index.js",
   "scripts": {
-    "start": "node build/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsnd --respawn --transpile-only index.ts"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
+    "@types/body-parser": "^1.19.2",
     "@types/jsonwebtoken": "^8.5.9",
-    "@types/node": "^18.8.5",
+    "@types/node": "^18.11.0",
     "@types/sequelize": "^4.28.14",
     "@types/validator": "^13.7.7",
     "eslint": "^8.21.0",
     "eslint-plugin-react": "^7.30.1",
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "ts-node-dev": "^2.0.0"
   },
   "dependencies": {
     "@types/cookie-parser": "^1.4.3",

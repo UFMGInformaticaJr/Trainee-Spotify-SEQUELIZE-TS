@@ -34,7 +34,7 @@ router.get('/:id',
   verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const artist = await ArtistService.getById(req.params.id);
+      const artist = await ArtistService.getById(req.params.id!);
 
       res.status(statusCodes.success).json(artist);
     } catch (error) {
@@ -48,7 +48,7 @@ router.put('/:id',
   checkRole([userRoles.admin]),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await ArtistService.update(req.params.id, req.body);
+      await ArtistService.update(req.params.id!, req.body);
 
       res.status(statusCodes.noContent).end();
     } catch (error) {
@@ -62,7 +62,7 @@ router.delete('/:id',
   checkRole([userRoles.admin]),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await ArtistService.delete(req.params.id);
+      await ArtistService.delete(req.params.id!);
 
       res.status(statusCodes.success).end();
     } catch (err) {

@@ -34,7 +34,7 @@ router.get('/:id',
   verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const song = await SongService.getById(req.params.id);
+      const song = await SongService.getById(req.params.id!);
       res.status(statusCodes.success).json(song);
     } catch (error) {
       next(error);
@@ -58,7 +58,7 @@ router.get('/artist/:id',
   verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try{
-      const song = await SongService.getSongsByArtist(req.params.id);
+      const song = await SongService.getSongsByArtist(req.params.id!);
       res.status(statusCodes.success).json(song);
     }catch (error){
       next(error);
@@ -70,7 +70,7 @@ router.put('/:id',
   verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await SongService.update(req.params.id, req.body);
+      await SongService.update(req.params.id!, req.body);
       res.status(statusCodes.noContent).end();
     } catch (error) {
       next(error);
@@ -83,7 +83,7 @@ router.delete('/:id',
   checkRole([userRoles.admin]),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await SongService.delete(req.params.id);
+      await SongService.delete(req.params.id!);
       res.status(statusCodes.noContent).end();
     } catch (err) {
       next(err);
