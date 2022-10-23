@@ -50,10 +50,9 @@ router.get('/user',
   verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (req.user) { 
-        const user = await UserService.getById(req.user.id);
-        res.status(statusCodes.success).json(user);
-      }
+      
+      const user = await UserService.getById(req.user!.id);
+      res.status(statusCodes.success).json(user);
     } catch (error) {
       next(error);
     }
@@ -66,7 +65,6 @@ router.get('/:id',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = await UserService.getById(req.params.id!);
-
       res.status(statusCodes.success).json(user);
     } catch (error) {
       next(error);
@@ -79,7 +77,7 @@ router.put('/:id',
   verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await UserService.update(req.params.id!, req.body, req.user);
+      await UserService.update(req.params.id!, req.body, req.user!);
       res.status(statusCodes.noContent).end();
     } catch (error) {
       next(error);
@@ -92,7 +90,7 @@ router.delete('/:id',
   checkRole([userRoles.admin]),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await UserService.delete(req.params.id!, req.user.id);
+      await UserService.delete(req.params.id!, req.user!.id);
       res.status(statusCodes.noContent).end();
     } catch (err) {
       next(err);
