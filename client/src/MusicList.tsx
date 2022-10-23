@@ -20,7 +20,7 @@ interface Litem {
   artist: string;
   album: string;
   number: number;
-  setMusicArray: (musicArray: Music[]) => void;
+  setMusicArray (musicArray: Music[]) : void;
   musicArray: Music[];
 }
 
