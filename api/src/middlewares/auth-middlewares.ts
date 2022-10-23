@@ -89,7 +89,7 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction) {
 export const checkRole = (roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
-      ! roles.includes(req.user.role) ? res.json('Você não possui permissão para realizar essa ação') : next();
+      ! roles.includes(req.user!.role) ? res.json('Você não possui permissão para realizar essa ação') : next();
     } catch(error){
       next(error);
     }
