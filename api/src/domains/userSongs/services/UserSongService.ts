@@ -6,7 +6,7 @@ import { User } from "../../users/models/User";
 
 // Descomentar a linha abaixo se for utilizar as funções geradas pelo sequelize song.addUser e song.removeUser
 
-// UserSong.sync({alter: true, force: true});
+// UserSong.sync({alter: true, force: false});
 
 class UserSongServiceClass  {
   async create(userId: string, songId: string){
