@@ -9,7 +9,7 @@ router.post('/:id',
   verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await UserSongService.create(req.user.id, req.params.id!);
+      await UserSongService.create(req.user!.id, req.params.id!);
       res.status(statusCodes.created).end();
     } catch (error) {
       next(error);
@@ -45,7 +45,7 @@ router.delete('/songs/:id',
   verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await UserSongService.delete(req.user.id, req.params.id!);
+      await UserSongService.delete(req.user!.id, req.params.id!);
       res.status(statusCodes.noContent).end();
     } catch (err) {
       next(err);
