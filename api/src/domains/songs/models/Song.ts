@@ -1,7 +1,7 @@
 import { sequelize } from '../../../../database';
 import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, HasManyAddAssociationMixin, HasManyRemoveAssociationMixin} from 'sequelize';
 import { Artist } from '../../artists/models/Artist';
-import { UserInterface } from '../../users/models/User';
+import { UserInterface } from '../../users/models/User.js';
 import { defaultImage } from '../constants/defaultImage';
 
 export interface SongInterface extends Model<InferAttributes<SongInterface>, InferCreationAttributes<SongInterface>> {
@@ -10,6 +10,8 @@ export interface SongInterface extends Model<InferAttributes<SongInterface>, Inf
   cover_image: string;
   artist_id: string;
   genre: string;
+  createdAt: CreationOptional<Date>;
+  updatedAt: CreationOptional<Date>;
   addUser: HasManyAddAssociationMixin<UserInterface, UserInterface['id']>;
   removeUser: HasManyRemoveAssociationMixin<UserInterface, UserInterface['id']>;
 }
@@ -37,7 +39,15 @@ export const Song = sequelize.define<SongInterface>('Songs', {
   genre: { 
     type: DataTypes.STRING,
     allowNull: false,
-  }
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
 });
 
 Song.belongsTo(Artist, {

@@ -6,7 +6,9 @@ import { User } from '../../users/models/User';
 interface UserSong extends Model<InferAttributes<UserSong>, InferCreationAttributes<UserSong>> {
   id: CreationOptional<string>;
   UserId: string;
-  SongId: string; 
+  SongId: string;
+  createdAt: CreationOptional<Date>;
+  updatedAt: CreationOptional<Date>; 
 }
 
 
@@ -32,7 +34,15 @@ export const UserSong = sequelize.define<UserSong>('UserSongs', {
       model: Song,
       key: 'id'
     }
-  }
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
 });
 
 Song.belongsToMany(User, {
