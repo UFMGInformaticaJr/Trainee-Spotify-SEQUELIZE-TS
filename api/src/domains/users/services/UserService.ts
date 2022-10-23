@@ -45,9 +45,10 @@ class UserServiceClass {
 
     if (!users) {
       throw new QueryError('Não há nenhum usuário cadastrado');
-    } else {
-      return users;
     }
+    
+    return users;
+    
   }
 
   async getById(id: string) {
@@ -56,10 +57,11 @@ class UserServiceClass {
         exclude: ['password', 'createdAt', 'updatedAt'],
       }});
 
-    if (user) {
-      return user;
+    if (!user) {
+      throw new QueryError(`Não há um usuário com o ID ${id}!`);
     }
-    throw new QueryError(`Não há um usuário com o ID ${id}!`);
+
+    return user;
   }
 
   async update(id: string, body: Attributes<UserInterface>, loggedUser: PayloadParams){
@@ -83,10 +85,11 @@ class UserServiceClass {
   async delete(id: string, idReqUser: string) {
     if (idReqUser == id) {
       throw new PermissionError('Não é possível deletar o próprio usuário!');
-    } else {
-      const user = await this.getById(id);
-      await user.destroy();
     }
+    
+    const user = await this.getById(id);
+    await user.destroy();
+  
   }
 }
 
