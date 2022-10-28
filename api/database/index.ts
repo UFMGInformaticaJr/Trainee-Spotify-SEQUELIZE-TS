@@ -1,11 +1,10 @@
 import { Sequelize } from 'sequelize';
-import { getEnv } from '../constants/getEnv';
 export const sequelize = new Sequelize(
-  getEnv('DB'),
-  getEnv('DB_USER'),
-  getEnv('DB_PASSWORD'),
+  process.env.DB,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
   {
-    host: getEnv('DB_HOST'),
+    host: process.env.DB_HOST,
     dialect: 'mysql',
     timezone: '-03:00',
   },

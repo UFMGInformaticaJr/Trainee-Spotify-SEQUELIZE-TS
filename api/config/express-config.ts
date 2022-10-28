@@ -10,7 +10,7 @@ export const app: Express = express();
 const options: CorsOptions = {
   origin: process.env.APP_URL,
   credentials: true
-}
+};
 app.use(cors(options));
 
 app.use(cookieParser());
