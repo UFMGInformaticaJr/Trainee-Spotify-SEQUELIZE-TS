@@ -1,29 +1,19 @@
-import { UserService } from "./UserService";
-import { User } from "../models/User";
+import {User} from '../models/User';
+import {UserInterface} from '../models/User';
+import {UserService} from './UserService';
 
-const userData  = {
-  id: '1',
-  name: 'John Doe',
-  email: 'teste@gmail.com',
-  password: '123456',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  role: 'admin',
-};
 
-const 
-
-jest.mock('../models/User', () => {
-  return {
-    findByPk: jest.fn(),
+jest.mock('../models/User', () => ({
+  User: {
     findOne: jest.fn(),
-    findAll: jest.fn(),
     create: jest.fn(),
     update: jest.fn(),
     destroy: jest.fn(),
-    save: jest.fn()
-  };
-});
+    findByPk: jest.fn(),
+  },
+}));
+
+
 
 describe('getById', () => {
   beforeEach(() => {
@@ -32,12 +22,28 @@ describe('getById', () => {
   });
 
   test('método recebe um id e retorna o usuário correspondente', async () => {
-    const id = 1;
+    const id = '1';
 
-    const usuario_retornado = await UserService.getById(id);
+    const user = {
+      id: '1',
+      name: 'Teste',
+      email: 'teste@gmail.com',
+      password: '123456',
+      role: 'user',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as UserInterface;
+    
+      
+  
+    (User.findByPk as jest.MockedFunction<typeof User.findByPk>).mockResolvedValue(user);
 
-    expect(usuario_retornado).toStrictEqual(userData);
+    const result = await UserService.getById(id);
+
+    expect(result).toEqual(user);
+
     expect(User.findByPk).toHaveBeenCalledTimes(1);
+    
   });
 
 });
