@@ -5,16 +5,19 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended"
     ],
+    "overrides": [
+    ],
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": "latest"
+        "ecmaVersion": "latest",
+        "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "@typescript-eslint"
     ],
     "rules": {
         "indent": [
@@ -29,29 +32,6 @@
             "error",
             "always"
         ],
-        "comma-spacing": [
-            "error",
-            {
-                "before": false,
-                "after": true
-            }
-        ],
-        "key-spacing": [
-            "error",
-            {
-                "beforeColon": false,
-                "afterColon": true
-            }
-        ],
-        "array-bracket-spacing": [
-            "error",
-            "never"
-        ],
-        "block-spacing": [
-            "error",
-            "always"
-        ],
-        "no-undef": "off",
-        "no-trailing-spaces": "error"
+        "@typescript-eslint/no-non-null-assertion": "off"
     }
 }

@@ -1,6 +1,6 @@
-import { Artist, ArtistInterface } from "../models/Artist";
-import { QueryError } from "../../../../errors/QueryError";
-import { Attributes } from "sequelize/types";
+import { Artist, ArtistInterface } from '../models/Artist';
+import { QueryError } from '../../../../errors/QueryError';
+import { Attributes } from 'sequelize/types';
 
 class ArtistServiceClass {
   async create(body: Attributes<ArtistInterface>){

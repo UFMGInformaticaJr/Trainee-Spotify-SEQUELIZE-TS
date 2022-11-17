@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { NotAuthorizedError } from '../../errors/NotAuthorizedError';
 import { InvalidParamError } from '../../errors/InvalidParamError';
@@ -8,7 +8,7 @@ import { statusCodes } from '../../constants/statusCodes';
 import { Request, Response, NextFunction } from 'express';
 
 export function errorHandler(error: Error, req: Request, res: Response, next: NextFunction) {
-  let message = error.message;
+  const message = error.message;
   let status = statusCodes.internalServerError;
 
   if (error instanceof JsonWebTokenError ||

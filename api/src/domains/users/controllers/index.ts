@@ -12,7 +12,7 @@ export const router = Router();
 router.post('/login', notLoggedIn, loginMiddleware);
 
 router.post('/logout',
-verifyJWT,
+  verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       res.clearCookie('jwt');
@@ -57,7 +57,7 @@ router.get('/user',
       next(error);
     }
   },
-  );
+);
 
 
 router.get('/:id',

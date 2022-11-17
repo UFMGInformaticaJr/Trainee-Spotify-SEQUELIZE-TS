@@ -61,7 +61,7 @@ class SongServiceClass {
     await song.update(body);
   }
 
-   async delete(id: string) {
+  async delete(id: string) {
     const song = await this.getById(id);
     await song.destroy();
   }
