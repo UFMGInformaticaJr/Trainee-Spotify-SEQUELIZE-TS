@@ -16,7 +16,7 @@ router.post('/logout',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       res.clearCookie('jwt');
-      res.status(statusCodes.noContent).end();
+      res.status(statusCodes.NO_CONTENT).end();
     } catch (error) {
       next(error);
     }
@@ -27,7 +27,7 @@ router.post('/',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await UserService.create(req.body);
-      res.status(statusCodes.created).end();
+      res.status(statusCodes.CREATED).end();
     } catch (error) {
       next(error);
     }
@@ -39,7 +39,7 @@ router.get('/',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const users = await UserService.getAll();
-      res.status(statusCodes.success).json(users);
+      res.status(statusCodes.SUCCESS).json(users);
     } catch(error){
       next(error);
     }
@@ -52,7 +52,7 @@ router.get('/user',
     try {
       
       const user = await UserService.getById(req.user!.id);
-      res.status(statusCodes.success).json(user);
+      res.status(statusCodes.SUCCESS).json(user);
     } catch (error) {
       next(error);
     }
@@ -65,7 +65,7 @@ router.get('/:id',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = await UserService.getById(req.params.id!);
-      res.status(statusCodes.success).json(user);
+      res.status(statusCodes.SUCCESS).json(user);
     } catch (error) {
       next(error);
     }
@@ -78,7 +78,7 @@ router.put('/:id',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await UserService.update(req.params.id!, req.body, req.user!);
-      res.status(statusCodes.noContent).end();
+      res.status(statusCodes.NO_CONTENT).end();
     } catch (error) {
       next(error);
     }
@@ -91,7 +91,7 @@ router.delete('/:id',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await UserService.delete(req.params.id!, req.user!.id);
-      res.status(statusCodes.noContent).end();
+      res.status(statusCodes.NO_CONTENT).end();
     } catch (err) {
       next(err);
     }

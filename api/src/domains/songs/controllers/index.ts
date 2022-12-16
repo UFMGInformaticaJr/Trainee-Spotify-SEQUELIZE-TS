@@ -11,7 +11,7 @@ router.post('/',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await SongService.create(req.body);
-      res.status(statusCodes.created).end();
+      res.status(statusCodes.CREATED).end();
     } catch (error) {
       next(error);
     }
@@ -23,7 +23,7 @@ router.get('/',
   async (req: Request, res: Response, next: NextFunction) => {
     try{
       const songs = await SongService.getAll();
-      res.status(statusCodes.success).json(songs);
+      res.status(statusCodes.SUCCESS).json(songs);
     }catch (error){
       next(error);
     }
@@ -35,7 +35,7 @@ router.get('/:id',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const song = await SongService.getById(req.params.id!);
-      res.status(statusCodes.success).json(song);
+      res.status(statusCodes.SUCCESS).json(song);
     } catch (error) {
       next(error);
     }
@@ -47,7 +47,7 @@ router.get('/song/random',
   async (req: Request, res: Response, next: NextFunction) => {
     try{
       const song = await SongService.getRandomSong();
-      res.status(statusCodes.success).json(song);
+      res.status(statusCodes.SUCCESS).json(song);
     }catch (error){
       next(error);
     }
@@ -59,7 +59,7 @@ router.get('/artist/:id',
   async (req: Request, res: Response, next: NextFunction) => {
     try{
       const song = await SongService.getSongsByArtist(req.params.id!);
-      res.status(statusCodes.success).json(song);
+      res.status(statusCodes.SUCCESS).json(song);
     }catch (error){
       next(error);
     }
@@ -71,7 +71,7 @@ router.put('/:id',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await SongService.update(req.params.id!, req.body);
-      res.status(statusCodes.noContent).end();
+      res.status(statusCodes.NO_CONTENT).end();
     } catch (error) {
       next(error);
     }
@@ -84,7 +84,7 @@ router.delete('/:id',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await SongService.delete(req.params.id!);
-      res.status(statusCodes.noContent).end();
+      res.status(statusCodes.NO_CONTENT).end();
     } catch (err) {
       next(err);
     }
