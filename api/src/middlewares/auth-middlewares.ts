@@ -2,9 +2,10 @@ import { JwtPayload, sign, verify } from 'jsonwebtoken';
 import { compare } from 'bcrypt';
 import { User } from '../domains/users/models/User';
 import { PermissionError } from '../../errors/PermissionError';
-import { statusCodes } from '../../constants/statusCodes';
+import { statusCodes } from '../../utils/constants/status-codes';
 import { PayloadParams } from '../domains/users/types/PayloadParams';
 import { Request, Response, NextFunction } from 'express';
+import { getEnv } from '../../utils/functions/get-env';
 
 function generateJWT(user: PayloadParams, res: Response) {
   const body = {
@@ -14,10 +15,10 @@ function generateJWT(user: PayloadParams, res: Response) {
     role: user.role,
   };
   
-  const token = sign({ user: body }, process.env.SECRET_KEY, { expiresIn: process.env.JWT_EXPIRATION});
+  const token = sign({ user: body }, getEnv('SECRET_KEY'), { expiresIn: getEnv('JWT_EXPIRATION')});
   res.cookie('jwt', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV !== 'development',
+    secure: getEnv('NODE_ENV') !== 'development',
   });
 }
 
@@ -45,7 +46,7 @@ export async function loginMiddleware(req: Request, res: Response, next: NextFun
 
     generateJWT(user, res);
 
-    res.status(statusCodes.noContent).end();
+    res.status(statusCodes.NO_CONTENT).end();
   } catch (error) {
     next(error);
   }
@@ -56,7 +57,7 @@ export function notLoggedIn(req: Request, res: Response, next: NextFunction) {
     const token = cookieExtractor(req);
 
     if (token) {
-      const decoded = verify(token, process.env.SECRET_KEY);
+      const decoded = verify(token, getEnv('SECRET_KEY'));
       if (decoded) {
         throw new PermissionError('Você já está logado no sistema!');
       }
@@ -71,7 +72,7 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction) {
   try {
     const token = cookieExtractor(req);
     if (token) {
-      const decoded = verify(token, process.env.SECRET_KEY) as JwtPayload;
+      const decoded = verify(token, getEnv('SECRET_KEY')) as JwtPayload;
       req.user = decoded.user;
     }
 

@@ -4,7 +4,7 @@
   "description": "gabarito para o trainee 2022/2",
   "main": "build/index.js",
   "scripts": {
-    "dev": "tsnd --respawn --transpile-only index.ts --ignore *.test.ts",
+    "dev": "tsnd --respawn index.ts --ignore *.test.ts",
     "test": "jest"
   },
   "author": "",

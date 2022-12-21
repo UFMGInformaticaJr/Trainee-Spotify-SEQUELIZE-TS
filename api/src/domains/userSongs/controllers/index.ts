@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { UserSongService } from '../services/UserSongService';
 import { verifyJWT } from '../../../middlewares/auth-middlewares';
-import { statusCodes } from '../../../../constants/statusCodes';
+import { statusCodes } from '../../../../utils/constants/status-codes';
 
 export const router = Router();
 

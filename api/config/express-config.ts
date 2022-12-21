@@ -2,13 +2,13 @@ import dotenv from 'dotenv';
 import express, { Express } from 'express';
 import cors, { CorsOptions } from 'cors';
 import cookieParser from 'cookie-parser';
+import { getEnv } from '../utils/functions/get-env';
 
 dotenv.config();
-
 export const app: Express = express();
 
 const options: CorsOptions = {
-  origin: process.env.APP_URL,
+  origin: getEnv('APP_URL'),
   credentials: true
 };
 app.use(cors(options));

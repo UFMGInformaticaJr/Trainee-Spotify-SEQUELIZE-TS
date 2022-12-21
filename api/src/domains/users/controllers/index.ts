@@ -5,7 +5,7 @@ import { loginMiddleware,
   checkRole,
   notLoggedIn } from '../../../middlewares/auth-middlewares';
 import { userRoles } from '../../users/constants/userRoles';
-import { statusCodes } from '../../../../constants/statusCodes';
+import { statusCodes } from '../../../../utils/constants/status-codes';
 
 export const router = Router();
 
@@ -50,7 +50,6 @@ router.get('/user',
   verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      
       const user = await UserService.getById(req.user!.id);
       res.status(statusCodes.SUCCESS).json(user);
     } catch (error) {
@@ -58,7 +57,6 @@ router.get('/user',
     }
   },
 );
-
 
 router.get('/:id',
   verifyJWT,
