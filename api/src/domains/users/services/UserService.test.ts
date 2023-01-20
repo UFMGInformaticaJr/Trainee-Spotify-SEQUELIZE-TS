@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {User} from '../models/User';
 import {UserInterface} from '../models/User';
 import {UserService} from './UserService';
