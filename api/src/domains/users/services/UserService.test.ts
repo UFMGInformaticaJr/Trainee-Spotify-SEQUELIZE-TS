@@ -66,7 +66,7 @@ describe('create', () => {
     await UserService.create(mockBodyUser);
 
     expect(User.create).toBeCalledWith(mockCreateUser);
-    expect(User.create).toBeCalledTimes(1);
+    expect(User.create).toHaveBeenCalledTimes(1) ;
   });
 
   test('método recebe um usuário com role admin => retorna um erro', async () => {
@@ -244,7 +244,7 @@ describe('update', () => {
     
     await UserService.update(id, mockBody, loggedUser);
 
-    expect(mockHash).toBeCalledTimes(1);
+    expect(mockHash).toHaveBeenCalledTimes(1);
     expect(mockBody.password).toBe('12345678');
   });
 
@@ -308,8 +308,8 @@ describe('delete', () => {
 
     await UserService.delete(id, idReqUser);
 
-    expect(User.findByPk).toBeCalledTimes(1);
-    expect(user.destroy).toBeCalledTimes(1);
+    expect(User.findByPk).toHaveBeenCalledTimes(1);
+    expect(user.destroy).toHaveBeenCalledTimes(1);
   });
 
   test('método recebe id == idReqUser => retorna um erro', async () => {

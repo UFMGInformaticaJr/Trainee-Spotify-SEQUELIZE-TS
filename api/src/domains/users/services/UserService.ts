@@ -91,7 +91,6 @@ class UserServiceClass {
     
     const user = await this.getById(id);
     await user.destroy();
-  
   }
 }
 
