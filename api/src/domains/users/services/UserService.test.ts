@@ -137,7 +137,7 @@ describe('getById', () => {
     jest.clearAllMocks();
   });
 
-  test('método recebe um id e retorna o usuário correspondente', async () => {
+  test('método recebe um id => retorna o usuário correspondente', async () => {
     const id = '1';
 
     const user = {

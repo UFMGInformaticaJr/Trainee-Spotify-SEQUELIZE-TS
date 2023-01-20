@@ -67,10 +67,43 @@ describe('getAll', () => {
   });
 
   test('método é chamado sem haver músicas no sistema => retorna um erro', async () => {
-    (Song.findAll as any).mockResolvedValue([]);
+    (Song.findAll as any).mockResolvedValue(null);
     
     await expect(SongService.getAll()).rejects.toThrow('Não há nenhuma música cadastrada');
   });
 });
 
+describe('getById', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+    jest.clearAllMocks();
+  });
+
+  test('método recebe um id => retorna a música correspondente', async () => {
+    const id = '1';
+
+    const mockSong = {
+      id: '1',
+      title: 'Teste',
+      cover_image: 'Teste',
+      artist_id: 'Teste',
+      genre: 'Teste',
+    } as SongInterface;
+  
+    (Song.findByPk as jest.MockedFunction<typeof Song.findByPk>).mockResolvedValue(mockSong);
+
+    const result = await SongService.getById(id);
+
+    expect(result).toEqual(mockSong);
+    expect(Song.findByPk).toHaveBeenCalledTimes(1);    
+  });
+
+  test('método recebe um id que não existe => retorna um erro', async () => {
+    const id = '1';
+
+    (Song.findByPk as jest.MockedFunction<typeof Song.findByPk>).mockResolvedValue(null);
+
+    await expect(SongService.getById(id)).rejects.toThrow('Não há uma música com o ID 1!');
+  });
+});
 
