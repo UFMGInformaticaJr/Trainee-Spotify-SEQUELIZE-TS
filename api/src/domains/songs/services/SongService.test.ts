@@ -107,3 +107,15 @@ describe('getById', () => {
   });
 });
 
+describe('getRandom', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+    jest.clearAllMocks();
+  });
+
+  test('método é chamado => retorna uma música aleatória', async () => {
+    (Song.findOne as any).mockResolvedValue({});
+
+    expect(Song.findOne).toHaveBeenCalledTimes(1);
+  });
+});
