@@ -34,7 +34,7 @@ class SongServiceClass {
     return song;
   }
 
-  async getRandomSong() {
+  async getRandom() {
     const songs = await this.getAll();
     const randomIndex = Math.floor(Math.random() * songs.length);
     const song = songs[randomIndex];

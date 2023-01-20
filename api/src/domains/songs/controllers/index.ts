@@ -46,7 +46,7 @@ router.get('/song/random',
   verifyJWT,
   async (req: Request, res: Response, next: NextFunction) => {
     try{
-      const song = await SongService.getRandomSong();
+      const song = await SongService.getRandom();
       res.status(statusCodes.SUCCESS).json(song);
     }catch (error){
       next(error);
