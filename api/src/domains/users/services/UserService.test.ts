@@ -78,8 +78,6 @@ describe('create', () => {
       role: 'admin',
     } as UserInterface;
 
-    (User.create as jest.MockedFunction<typeof User.create>).mockResolvedValue({});
-
     await expect(UserService.create(mockBodyUser)).rejects.toThrowError('Não é possível criar um usuário com cargo de administrador!');
   });
 
