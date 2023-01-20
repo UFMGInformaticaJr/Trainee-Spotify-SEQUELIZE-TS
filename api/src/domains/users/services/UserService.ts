@@ -20,20 +20,22 @@ class UserServiceClass {
     }
 
     const user = await User.findOne({where: {email: body.email}});
+    
     if (user) {
       throw new QueryError('E-mail já cadastrado!');
-    } else {
-      const user = {
-        name: body.name,
-        email: body.email,
-        password: body.password,
-        role: body.role,
-      };
-
-      user.password = await this.encryptPassword(user.password);
-
-      await User.create(user);
     }
+
+    const newUser = {
+      name: body.name,
+      email: body.email,
+      password: body.password,
+      role: body.role,
+    };
+
+    newUser.password = await this.encryptPassword(newUser.password);
+
+    await User.create(newUser);
+    
   }
 
   async getAll() {
@@ -64,17 +66,17 @@ class UserServiceClass {
     return user;
   }
 
-  async update(id: string, body: Attributes<UserInterface>, loggedUser: PayloadParams){
-    const user = await this.getById(id);
-
+  async update(id: string, body: UserInterface, loggedUser: PayloadParams){
     if (loggedUser.role != userRoles.admin && loggedUser.id != id) {
       throw new NotAuthorizedError('Você não tem permissão para editar outro usuário!');
     }
 
-    if (body.role && loggedUser.role != userRoles.admin) {
-      throw new NotAuthorizedError('Você não tem permissão para editar seu cargo');
+    if (body.role && loggedUser.role != userRoles.admin && loggedUser.role != body.role) {
+      throw new NotAuthorizedError('Você não tem permissão para editar seu cargo!');
     }
 
+    const user = await this.getById(id);
+    
     if (body.password) {
       body.password = await this.encryptPassword(body.password);
     }
