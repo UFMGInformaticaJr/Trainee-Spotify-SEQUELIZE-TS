@@ -104,13 +104,19 @@ describe('getAll', () => {
     const users = [
       {
         id: '1',
-      },
+        name: 'Teste',
+        email: 'Teste',
+        role: 'user',
+      } as UserInterface,
       {
         id: '2',
-      }
+        name: 'Teste2',
+        email: 'Teste2',
+        role: 'user',
+      } as UserInterface,
     ];
 
-    (User.findAll as any).mockResolvedValue(users);
+    (User.findAll as jest.MockedFunction<typeof User.findAll>).mockResolvedValue(users);
 
     const result = await UserService.getAll();
 
