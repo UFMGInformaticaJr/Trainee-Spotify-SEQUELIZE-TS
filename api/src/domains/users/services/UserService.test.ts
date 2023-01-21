@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {User} from '../models/User';
-import {UserInterface} from '../models/User';
-import {UserService} from './UserService';
+import { User } from '../models/User';
+import { UserInterface } from '../models/User';
+import { UserService } from './UserService';
+import { QueryError } from '../../../../errors/QueryError';
+import { PermissionError } from '../../../../errors/PermissionError';
+import { NotAuthorizedError } from '../../../../errors/NotAuthorizedError';
 import bcrypt from 'bcrypt';
 
 jest.mock('../models/User', () => ({
@@ -33,9 +36,7 @@ describe('encryptPassword', () => {
     expect(encrypted).toEqual('12345678');
     expect(bcrypt.hash).toHaveBeenCalledTimes(1);
     expect(bcrypt.hash).toHaveBeenCalledWith(password, 10);
-
   });
-
 });
 
 describe('create', () => {
@@ -65,7 +66,7 @@ describe('create', () => {
     
     await UserService.create(mockBodyUser);
 
-    expect(User.create).toBeCalledWith(mockCreateUser);
+    expect(User.create).toHaveBeenCalledWith(mockCreateUser);
     expect(User.create).toHaveBeenCalledTimes(1) ;
   });
 
@@ -77,7 +78,7 @@ describe('create', () => {
       role: 'admin',
     } as UserInterface;
 
-    await expect(UserService.create(mockBodyUser)).rejects.toThrowError('Não é possível criar um usuário com cargo de administrador!');
+    await expect(UserService.create(mockBodyUser)).rejects.toThrowError(new PermissionError('Não é possível criar um usuário com cargo de administrador!'));
   });
 
   test('método recebe um usuário com email já cadastrado => retorna um erro', async () => {
@@ -90,7 +91,7 @@ describe('create', () => {
 
     (User.findOne as jest.MockedFunction<typeof User.findOne>).mockResolvedValue(mockUser);
 
-    await expect(UserService.create(mockUser)).rejects.toThrowError('E-mail já cadastrado!');
+    await expect(UserService.create(mockUser)).rejects.toThrowError(new QueryError('E-mail já cadastrado!'));
   });   
 });
 
@@ -127,7 +128,7 @@ describe('getAll', () => {
   test('método é chamado sem haver usuários no sistema => retorna um erro', async () => {
     (User.findAll as any).mockResolvedValue(null);
 
-    await expect(UserService.getAll()).rejects.toThrowError('Não há nenhum usuário cadastrado');
+    await expect(UserService.getAll()).rejects.toThrowError(new QueryError('Não há nenhum usuário cadastrado'));
   });
 });
 
@@ -165,7 +166,7 @@ describe('getById', () => {
 
     (User.findByPk as jest.MockedFunction<typeof User.findByPk>).mockResolvedValue(null);
 
-    await expect(UserService.getById(id)).rejects.toThrowError('Não há um usuário com o ID 1!');
+    await expect(UserService.getById(id)).rejects.toThrowError(new QueryError('Não há um usuário com o ID 1!'));
   });
 });
 
@@ -259,7 +260,7 @@ describe('update', () => {
 
     const body = {} as UserInterface;
 
-    await expect(UserService.update(id, body, loggedUser)).rejects.toThrowError('Você não tem permissão para editar outro usuário!');
+    await expect(UserService.update(id, body, loggedUser)).rejects.toThrowError(new NotAuthorizedError('Você não tem permissão para editar outro usuário!'));
   });
 
   test('método recebe um usuário que não é admin tentando editar seu cargo => retorna um erro', async () => {
@@ -278,7 +279,7 @@ describe('update', () => {
       role: 'admin',
     } as UserInterface;
 
-    await expect(UserService.update(id, body, loggedUser)).rejects.toThrowError('Você não tem permissão para editar seu cargo!');
+    await expect(UserService.update(id, body, loggedUser)).rejects.toThrowError(new NotAuthorizedError('Você não tem permissão para editar seu cargo!'));
   });
 
 });
@@ -316,6 +317,6 @@ describe('delete', () => {
     const id = '1';
     const idReqUser = '1';
 
-    await expect(UserService.delete(id, idReqUser)).rejects.toThrow('Não é possível deletar o próprio usuário!');
+    await expect(UserService.delete(id, idReqUser)).rejects.toThrow(new PermissionError('Não é possível deletar o próprio usuário!'));
   });
 });
