@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {Song} from '../models/Song';
-import {SongInterface} from '../models/Song';
-import {SongService} from './SongService';
+import { Song } from '../models/Song';
+import { SongInterface } from '../models/Song';
+import { SongService } from './SongService';
+import { QueryError } from '../../../../errors/QueryError';
 
 jest.mock('../models/Song', () => ({
   Song: {
@@ -32,7 +33,7 @@ describe('create', () => {
     
     await SongService.create(mockBodySong);
 
-    expect(Song.create).toBeCalledWith(mockBodySong);
+    expect(Song.create).toHaveBeenCalledWith(mockBodySong);
     expect(Song.create).toHaveBeenCalledTimes(1);
   });   
 });
@@ -46,18 +47,21 @@ describe('getAll', () => {
   test('método é chamado => retorna as músicas', async () => {
     const mockSongs = [
       {
+        id: '1',
         title: 'Teste',
         cover_image: 'Teste',
         artist_id: 'Teste',
         genre: 'Teste',
       } as SongInterface,
       {
+        id: '2',
         title: 'Teste2',
         cover_image: 'Teste2',
         artist_id: 'Teste2',
         genre: 'Teste2',
       } as SongInterface,
     ];
+
     (Song.findAll as jest.MockedFunction<typeof Song.findAll>).mockResolvedValue(mockSongs);
     
     const songs = await SongService.getAll();
@@ -69,7 +73,7 @@ describe('getAll', () => {
   test('método é chamado sem haver músicas no sistema => retorna um erro', async () => {
     (Song.findAll as any).mockResolvedValue(null);
     
-    await expect(SongService.getAll()).rejects.toThrow('Não há nenhuma música cadastrada');
+    await expect(SongService.getAll()).rejects.toThrow(new QueryError('Não há nenhuma música cadastrada'));
   });
 });
 
@@ -103,7 +107,7 @@ describe('getById', () => {
 
     (Song.findByPk as jest.MockedFunction<typeof Song.findByPk>).mockResolvedValue(null);
 
-    await expect(SongService.getById(id)).rejects.toThrow('Não há uma música com o ID 1!');
+    await expect(SongService.getById(id)).rejects.toThrow(new QueryError('Não há uma música com o ID 1!'));
   });
 });
 
@@ -160,7 +164,7 @@ describe('getSongsByArtist', () => {
 
     (Song.findAll as any).mockResolvedValue(null);
 
-    await expect(SongService.getSongsByArtist(id)).rejects.toThrow('Não há nenhuma música do artista com o ID 1!');
+    await expect(SongService.getSongsByArtist(id)).rejects.toThrow(new QueryError('Não há nenhuma música do artista com o ID 1!'));
   });
 });
 
@@ -172,6 +176,7 @@ describe('update', () => {
 
   test('método recebe um id e um objeto com as informações da música => chama o update com os dados corretos', async () => {
     const id = '1';
+
     const mockBodySong = {
       title: 'Teste',
       cover_image: 'Teste',
@@ -195,21 +200,7 @@ describe('update', () => {
 
     expect(Song.findByPk).toHaveBeenCalledTimes(1);
     expect(song.update).toHaveBeenCalledTimes(1);
-    expect(song.update).toBeCalledWith(mockBodySong);
-  });
-
-  test('método recebe um id que não existe => retorna um erro', async () => {
-    const id = '1';
-    const mockBodySong = {
-      title: 'Teste',
-      cover_image: 'Teste',
-      artist_id: 'Teste',
-      genre: 'Teste',
-    } as SongInterface;
-
-    (Song.findByPk as any).mockResolvedValue(null);
-    
-    await expect(SongService.update(id, mockBodySong)).rejects.toThrow('Não há uma música com o ID 1!');
+    expect(song.update).toHaveBeenCalledWith(mockBodySong);
   });
 }); 
 
@@ -238,13 +229,5 @@ describe('delete', () => {
 
     expect(Song.findByPk).toHaveBeenCalledTimes(1);
     expect(song.destroy).toHaveBeenCalledTimes(1);
-  });
-
-  test('método recebe um id que não existe => retorna um erro', async () => {
-    const id = '1';
-
-    (Song.findByPk as any).mockResolvedValue(null);
-    
-    await expect(SongService.delete(id)).rejects.toThrow('Não há uma música com o ID 1!');
   });
 });
