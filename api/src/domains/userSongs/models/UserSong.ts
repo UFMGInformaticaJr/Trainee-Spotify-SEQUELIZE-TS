@@ -11,7 +11,6 @@ interface UserSong extends Model<InferAttributes<UserSong>, InferCreationAttribu
   updatedAt: CreationOptional<Date>; 
 }
 
-
 export const UserSong = sequelize.define<UserSong>('UserSongs', {
   id: {
     type: DataTypes.INTEGER,
@@ -47,14 +46,10 @@ export const UserSong = sequelize.define<UserSong>('UserSongs', {
 
 Song.belongsToMany(User, {
   through: UserSong,
-  onUpdate: 'CASCADE',
-  onDelete: 'CASCADE'
 });
 
 User.belongsToMany(Song, {
   through: UserSong,
-  onUpdate: 'CASCADE',
-  onDelete: 'CASCADE'
 });
 
 //Super Many-to-Many
@@ -63,7 +58,7 @@ UserSong.belongsTo(Song);
 User.hasMany(UserSong);
 UserSong.belongsTo(User);
 
-UserSong.sync({alter: false, force: true})
+UserSong.sync({alter: false, force: false})
   .then(() => {
     console.log('UserSong table was (re)created');
   })
