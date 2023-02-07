@@ -27,16 +27,16 @@ Esse é o gabarito do projeto do Processo Trainee 2022.2 em TypeScript. Nesse re
 # Como rodar:
    1. Clone este repositório
       
-      git clone https://github.com/UFMGInformaticaJr/Trainee-Spotify-TS
+            git clone https://github.com/UFMGInformaticaJr/Trainee-Spotify-TS
    2. Vá até a pasta da api
 
-      cd Trainee-Spotify-TS/api
+            cd Trainee-Spotify-TS/api
    3. Instale as dependências
 
-      npm install
+            npm install
    4. Rode a api
 
-      npm start
+            npm start
 
 # Rotas
 ## Users
